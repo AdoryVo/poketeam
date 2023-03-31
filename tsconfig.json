@@ -5,6 +5,7 @@
 	  "module": "NodeNext",
 	  "moduleResolution": "nodenext",
 	  "target": "ES2021",
+    "resolveJsonModule": true
 	},
   "include": ["src/*"],
 	"exclude": ["./**/dist", "examples"],

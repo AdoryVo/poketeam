@@ -1,5 +1,5 @@
 // Team
-import Team from './team'
+import Team from './team.js'
 export default Team
 
 // Types
