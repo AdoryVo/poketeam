@@ -6,18 +6,18 @@ import test from 'ava'
 import Team from '../src/index.js'
 import bulbasaur from './data/bulbasaur.json' assert { type: 'json' }
 
-test('get()', t => {
+test('get()', (t) => {
   const pokemon = [bulbasaur]
   const team = new Team({ pokemon })
-  
+
   t.deepEqual(team.get(), pokemon)
 })
 
-test('toString()', t => {
+test('toString()', (t) => {
   const pokemon = [bulbasaur]
   const team = new Team({ pokemon })
 
   console.log(team.toString())
-  
+
   t.assert(team.toString())
 })

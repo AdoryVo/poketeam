@@ -5,17 +5,18 @@ const DEFAULT_TEAM_SIZE = 6
 
 interface TeamOptions {
   name?: string
-  pokemon?: Array<Pokemon|null>
+  pokemon?: Array<Pokemon | null>
   capacity?: number
 }
 
 class Team {
   name: string
-  pokemon: Array<Pokemon|null>
+  pokemon: Array<Pokemon | null>
 
   constructor(options?: TeamOptions) {
     this.name = options.name ?? ''
-    this.pokemon = options.pokemon?.slice(0) ?? new Array(DEFAULT_TEAM_SIZE).fill(null)
+    this.pokemon =
+      options.pokemon?.slice(0) ?? new Array(DEFAULT_TEAM_SIZE).fill(null)
 
     const capacity = options.capacity ?? DEFAULT_TEAM_SIZE
 
@@ -23,20 +24,20 @@ class Team {
     if (Number.isSafeInteger(capacity) && capacity > 0) {
       // Validate: Capacity cannot be less than size of specified team
       if (capacity < this.occupancy) {
-        throw Error('Capacity cannot be less than team size')
+        throw new Error('Capacity cannot be less than team size')
       }
-          
+
       // Fill team slots to match capacity
       while (this.capacity < capacity) {
         this.pokemon.push(null)
       }
-        
+
       // Shrink team slots to match capacity
       while (this.capacity > capacity) {
         this.pokemon.splice(this.pokemon.indexOf(null), 1)
       }
     } else {
-      throw Error('Capacity must be a positive integer')
+      throw new Error('Capacity must be a positive integer')
     }
   }
 

@@ -3,8 +3,8 @@
   "version": "0.0.0-development",
   "description": "Library to build Pokemon teams",
   "keywords": [],
-  "repository": "github:AdoryVo/poketeam",
   "license": "MIT",
+  "repository": "github:AdoryVo/poketeam",
   "author": "Adory Vo <business@adoryvo.com> (https://adoryvo.com)",
   "type": "module",
   "main": "./dist/index.js",
@@ -12,17 +12,19 @@
   "files": [
     "dist/**"
   ],
-  "ava": {
-    "extensions": {
-      "ts": "module"
-    },
-    "nodeArguments": [
-      "--loader=ts-node/esm"
-    ]
-  },
   "scripts": {
+    "format": "prettier --write ./**/*.{ts,tsx}",
+    "lint": "eslint . --ext .ts,.tsx --fix --cache",
     "build": "tsup --dts",
-    "test": "c8 ava"
+    "test": "c8 ava",
+    "prepare": "husky install"
+  },
+  "lint-staged": {
+    "*.json": "prettier --write",
+    "*.ts": [
+      "prettier --write",
+      "eslint --fix --cache"
+    ]
   },
   "devDependencies": {
     "@types/lodash": "^4.14.192",
@@ -31,12 +33,31 @@
     "ava": "^5.2.0",
     "c8": "^7.13.0",
     "eslint": "^8.37.0",
+    "eslint-config-prettier": "^8.8.0",
+    "lint-staged": "^13.2.0",
+    "prettier": "^2.8.7",
     "ts-node": "^10.9.1",
     "tsup": "^6.7.0",
-    "typescript": "^5.0.3"
+    "typescript": "^5.0.3",
+    "husky": "^8.0.0"
   },
   "dependencies": {
     "lodash": "^4.17.21",
     "pokedex-promise-v2": "^4.1.0"
+  },
+  "prettier": {
+    "trailingComma": "none",
+    "useTabs": false,
+    "tabWidth": 2,
+    "semi": false,
+    "singleQuote": true
+  },
+  "ava": {
+    "extensions": {
+      "ts": "module"
+    },
+    "nodeArguments": [
+      "--loader=ts-node/esm"
+    ]
   }
 }
