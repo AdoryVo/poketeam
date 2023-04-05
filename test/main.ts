@@ -6,18 +6,51 @@ import test from 'ava'
 import Team from '../src/index.js'
 import bulbasaur from './data/bulbasaur.json' assert { type: 'json' }
 
+test('add()', async (t) => {
+  const team = new Team()
+
+  await team.add('bulbasaur')
+
+  t.is(team.get(0)?.name, 'bulbasaur')
+})
+
+test('add(): cannot add a nonexistent Pokemon', async (t) => {
+  const team = new Team()
+
+  const error = await t.throwsAsync(team.add('missingno'))
+
+  t.assert(error)
+})
+
+test('add(): cannot add to a full team', async (t) => {
+  const options = {
+    pokemon: [bulbasaur],
+    capacity: 1
+  }
+  const team = new Team(options)
+
+  const error = await t.throwsAsync(team.add('bulbasaur'))
+
+  t.assert(error)
+})
+
 test('get()', (t) => {
   const pokemon = [bulbasaur]
   const team = new Team({ pokemon })
 
-  t.deepEqual(team.get(), pokemon)
+  t.is(team.get(0)?.name, 'bulbasaur')
+})
+
+test('getAll()', (t) => {
+  const pokemon = [bulbasaur]
+  const team = new Team({ pokemon })
+
+  t.deepEqual(team.getAll(), pokemon)
 })
 
 test('toString()', (t) => {
   const pokemon = [bulbasaur]
   const team = new Team({ pokemon })
-
-  console.log(team.toString())
 
   t.assert(team.toString())
 })

@@ -7,4 +7,6 @@ const bulbasaur = await P.getPokemonByName('bulbasaur')
 const pokemon = [bulbasaur]
 const team = new Team({ pokemon })
 
-console.log(team)
+team.add('charmander')
+
+console.log(team.toString())

@@ -1,0 +1,12 @@
+<html>
+  <body>
+    <script type="module">
+      import Team from 'https://www.unpkg.com/poketeam'
+
+      const team = new Team()
+      team.add('bulbasaur')
+
+      console.log(team.get(0).name) // => 'bulbasaur'
+    </script>
+  </body>
+</html>

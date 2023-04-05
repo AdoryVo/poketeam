@@ -1,8 +1,11 @@
 {
   "name": "poketeam",
-  "version": "0.0.0-development",
-  "description": "Library to build Pokemon teams",
-  "keywords": [],
+  "version": "0.1.1-development",
+  "description": "Library for building Pokemon teams",
+  "keywords": [
+    "pokemon",
+    "pokeapi"
+  ],
   "license": "MIT",
   "repository": "github:AdoryVo/poketeam",
   "author": "Adory Vo <business@adoryvo.com> (https://adoryvo.com)",
@@ -28,18 +31,19 @@
   },
   "devDependencies": {
     "@types/lodash": "^4.14.192",
-    "@typescript-eslint/eslint-plugin": "^5.57.0",
-    "@typescript-eslint/parser": "^5.57.0",
+    "@typescript-eslint/eslint-plugin": "^5.57.1",
+    "@typescript-eslint/parser": "^5.57.1",
     "ava": "^5.2.0",
     "c8": "^7.13.0",
     "eslint": "^8.37.0",
     "eslint-config-prettier": "^8.8.0",
+    "husky": "^8.0.3",
     "lint-staged": "^13.2.0",
+    "poketeam": "0.1.0-development",
     "prettier": "^2.8.7",
     "ts-node": "^10.9.1",
     "tsup": "^6.7.0",
-    "typescript": "^5.0.3",
-    "husky": "^8.0.0"
+    "typescript": "^5.0.3"
   },
   "dependencies": {
     "lodash": "^4.17.21",

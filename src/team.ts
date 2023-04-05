@@ -1,6 +1,7 @@
-import type { Pokemon } from 'pokedex-promise-v2'
+import Pokedex, { type Pokemon } from 'pokedex-promise-v2'
 import { basic } from './pokemon.js'
 
+const P = new Pokedex()
 const DEFAULT_TEAM_SIZE = 6
 
 interface TeamOptions {
@@ -13,7 +14,7 @@ class Team {
   name: string
   pokemon: Array<Pokemon | null>
 
-  constructor(options?: TeamOptions) {
+  constructor(options: TeamOptions = {}) {
     this.name = options.name ?? ''
     this.pokemon =
       options.pokemon?.slice(0) ?? new Array(DEFAULT_TEAM_SIZE).fill(null)
@@ -57,12 +58,37 @@ class Team {
     return this.pokemon.length
   }
 
-  get() {
+  async add(pokemonName: string) {
+    if (this.isFull()) {
+      throw new Error('Cannot add to a full team')
+    }
+
+    return P.getPokemonByName(pokemonName)
+      .then((pokemon) => {
+        const emptySlot = this.pokemon.indexOf(null)
+        this.pokemon[emptySlot] = pokemon
+
+        return pokemon
+      })
+      .catch((error) => {
+        throw new Error('Error occurred getting Pokemon: ', error)
+      })
+  }
+
+  get(index: number): Pokemon | null | undefined {
+    return this.pokemon[index]
+  }
+
+  getAll() {
     return this.pokemon.filter((slot) => slot !== null)
   }
 
+  isFull() {
+    return this.occupancy === this.capacity
+  }
+
   toString() {
-    let repr = ''
+    let repr = `${this.name || 'Untitled Team'}\n`
 
     this.pokemon.forEach((slot, index) => {
       const entity = slot ? basic(slot) : '<empty>'
