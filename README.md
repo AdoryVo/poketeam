@@ -25,14 +25,14 @@ import Team from 'poketeam'
 
 // Initialization
 const options = {
-  name: 'Team Rocket' // Team name
-  pokemon: [],        // Initial list of Pokemon
-  capacity: 3,        // Team capacity
+  name: 'Team Rocket', // Team name
+  pokemon: [],         // Initial list of Pokemon
+  capacity: 3,         // Team capacity
 }
 const team = new Team(options)
 
 // Add a Pokemon to your team (async via PokeAPI)
-team.add('bulbasaur')
+const bulbasaur = await team.push('bulbasaur')
 
 // Get the Pokemon at a specified index
 team.get(0)
@@ -45,7 +45,6 @@ console.log(`${team}`)
 ```
 
 ## Coming Soon
-- Full CRUD functionality
 - Learnset & moveset interactivity
 - Stats, levels, abilities, etc.
 - Data & image getters for easy frontend integration

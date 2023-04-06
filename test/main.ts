@@ -6,30 +6,30 @@ import test from 'ava'
 import Team from '../src/index.js'
 import bulbasaur from './data/bulbasaur.json' assert { type: 'json' }
 
-test('add()', async (t) => {
+test('push()', async (t) => {
   const team = new Team()
 
-  await team.add('bulbasaur')
+  await team.push('bulbasaur')
 
   t.is(team.get(0)?.name, 'bulbasaur')
 })
 
-test('add(): cannot add a nonexistent Pokemon', async (t) => {
+test('push(): cannot add a nonexistent Pokemon', async (t) => {
   const team = new Team()
 
-  const error = await t.throwsAsync(team.add('missingno'))
+  const error = await t.throwsAsync(team.push('missingno'))
 
   t.assert(error)
 })
 
-test('add(): cannot add to a full team', async (t) => {
+test('push(): cannot add to a full team', async (t) => {
   const options = {
     pokemon: [bulbasaur],
     capacity: 1
   }
   const team = new Team(options)
 
-  const error = await t.throwsAsync(team.add('bulbasaur'))
+  const error = await t.throwsAsync(team.push('bulbasaur'))
 
   t.assert(error)
 })

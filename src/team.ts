@@ -1,7 +1,6 @@
-import Pokedex, { type Pokemon } from 'pokedex-promise-v2'
-import { basic } from './pokemon.js'
+import { type Pokemon } from 'pokedex-promise-v2'
+import { basic, getPokemon, type PokemonIdentifier } from './pokemon.js'
 
-const P = new Pokedex()
 const DEFAULT_TEAM_SIZE = 6
 
 interface TeamOptions {
@@ -58,21 +57,47 @@ class Team {
     return this.pokemon.length
   }
 
-  async add(pokemonName: string) {
-    if (this.isFull()) {
+  pop() {
+    const lastPokemonSlot = this.pokemon.findLastIndex(
+      (pokemon) => pokemon !== null
+    )
+    if (lastPokemonSlot === -1) {
       throw new Error('Cannot add to a full team')
     }
 
-    return P.getPokemonByName(pokemonName)
-      .then((pokemon) => {
-        const emptySlot = this.pokemon.indexOf(null)
-        this.pokemon[emptySlot] = pokemon
+    const removed = this.pokemon[lastPokemonSlot]
+    this.pokemon[lastPokemonSlot] = null
+    return removed
+  }
 
-        return pokemon
-      })
-      .catch((error) => {
-        throw new Error('Error occurred getting Pokemon: ', error)
-      })
+  async push(identifier: PokemonIdentifier) {
+    const emptySlot = this.pokemon.indexOf(null)
+    if (emptySlot === -1) {
+      throw new Error('Cannot add to a full team')
+    }
+
+    const pokemon = await getPokemon(identifier)
+    this.pokemon[emptySlot] = pokemon
+    return pokemon
+  }
+
+  clear() {
+    this.pokemon = new Array(this.capacity).fill(null)
+  }
+
+  delete(identifier: PokemonIdentifier) {
+    const indexOfPokemon = this.indexOf(identifier)
+
+    if (indexOfPokemon === -1) {
+      return false
+    } else {
+      this.pokemon[indexOfPokemon] = null
+      return true
+    }
+  }
+
+  find(identfier: PokemonIdentifier) {
+    return this.pokemon[this.indexOf(identfier)]
   }
 
   get(index: number): Pokemon | null | undefined {
@@ -83,8 +108,32 @@ class Team {
     return this.pokemon.filter((slot) => slot !== null)
   }
 
+  has(identifier: PokemonIdentifier) {
+    return this.indexOf(identifier) !== -1
+  }
+
+  indexOf(identifier: PokemonIdentifier) {
+    if (typeof identifier === 'string') {
+      return this.pokemon.findIndex((pokemon) => pokemon?.name === identifier)
+    } else if (typeof identifier === 'number') {
+      return this.pokemon.findIndex((pokemon) => pokemon?.id === identifier)
+    } else if (identifier?.name) {
+      return this.pokemon.findIndex(
+        (pokemon) => pokemon?.name === identifier.name
+      )
+    } else {
+      return this.pokemon.findIndex((pokemon) => pokemon === identifier)
+    }
+  }
+
   isFull() {
-    return this.occupancy === this.capacity
+    return this.pokemon.indexOf(null) === -1
+  }
+
+  async set(index: number, identifier: PokemonIdentifier) {
+    const pokemon = await getPokemon(identifier)
+    this.pokemon[index] = pokemon
+    return pokemon
   }
 
   toString() {
