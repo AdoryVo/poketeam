@@ -15,8 +15,14 @@ module.exports = {
     ecmaVersion: 'latest',
     sourceType: 'module'
   },
-  plugins: ['@typescript-eslint'],
+  plugins: ['@typescript-eslint', 'import'],
   rules: {
-    'eol-last': ['error', 'always']
+    'eol-last': ['error', 'always'],
+    'import/order': ['error', {
+      alphabetize: {
+        order: 'asc'
+      },
+      'newlines-between': 'always'
+    }]
   }
 }

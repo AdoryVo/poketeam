@@ -1,9 +1,9 @@
 import capitalize from 'lodash/capitalize.js'
 import Pokedex, { type Pokemon } from 'pokedex-promise-v2'
 
-const P = new Pokedex()
+import type { PokemonIdentifier } from './types.js'
 
-export type PokemonIdentifier = number | string | Pokemon
+const P = new Pokedex()
 
 export function basic(pokemon: Pokemon) {
   const { id, name } = pokemon

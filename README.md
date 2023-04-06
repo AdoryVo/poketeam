@@ -34,6 +34,9 @@ const team = new Team(options)
 // Add a Pokemon to your team (async via PokeAPI)
 const bulbasaur = await team.push('bulbasaur')
 
+// Set a new team
+await team.set(['bulbasaur', 'charmander', 'squirtle'])
+
 // Get the Pokemon at a specified index
 team.get(0)
 
@@ -45,10 +48,12 @@ console.log(`${team}`)
 ```
 
 ## Coming Soon
+- API documentation & sufficient JSDoc 
 - Learnset & moveset interactivity
 - Stats, levels, abilities, etc.
 - Data & image getters for easy frontend integration
 - Build optimization
+- Custom usage support w/ warnings
 - Browser support
   - Idea 1: Via removing dependencies
 

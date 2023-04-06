@@ -1,24 +1,20 @@
 import { type Pokemon } from 'pokedex-promise-v2'
-import { basic, getPokemon, type PokemonIdentifier } from './pokemon.js'
 
-const DEFAULT_TEAM_SIZE = 6
-
-interface TeamOptions {
-  name?: string
-  pokemon?: Array<Pokemon | null>
-  capacity?: number
-}
+import { basic, getPokemon } from './pokemon.js'
+import type { PokemonIdentifier, TeamOptions } from './types.js'
 
 class Team {
+  static DEFAULT_TEAM_SIZE = 6
+
   name: string
   pokemon: Array<Pokemon | null>
 
   constructor(options: TeamOptions = {}) {
     this.name = options.name ?? ''
     this.pokemon =
-      options.pokemon?.slice(0) ?? new Array(DEFAULT_TEAM_SIZE).fill(null)
+      options.pokemon?.slice(0) ?? new Array(Team.DEFAULT_TEAM_SIZE).fill(null)
 
-    const capacity = options.capacity ?? DEFAULT_TEAM_SIZE
+    const capacity = options.capacity ?? Team.DEFAULT_TEAM_SIZE
 
     // Validate: Capacity must be a positive integer
     if (Number.isSafeInteger(capacity) && capacity > 0) {
@@ -57,32 +53,8 @@ class Team {
     return this.pokemon.length
   }
 
-  pop() {
-    const lastPokemonSlot = this.pokemon.findLastIndex(
-      (pokemon) => pokemon !== null
-    )
-    if (lastPokemonSlot === -1) {
-      throw new Error('Cannot add to a full team')
-    }
-
-    const removed = this.pokemon[lastPokemonSlot]
-    this.pokemon[lastPokemonSlot] = null
-    return removed
-  }
-
-  async push(identifier: PokemonIdentifier) {
-    const emptySlot = this.pokemon.indexOf(null)
-    if (emptySlot === -1) {
-      throw new Error('Cannot add to a full team')
-    }
-
-    const pokemon = await getPokemon(identifier)
-    this.pokemon[emptySlot] = pokemon
-    return pokemon
-  }
-
   clear() {
-    this.pokemon = new Array(this.capacity).fill(null)
+    this.pokemon = this.pokemon.fill(null)
   }
 
   delete(identifier: PokemonIdentifier) {
@@ -96,8 +68,14 @@ class Team {
     }
   }
 
-  find(identfier: PokemonIdentifier) {
-    return this.pokemon[this.indexOf(identfier)]
+  async fill(identifier: PokemonIdentifier, start = 0, end = this.capacity) {
+    const pokemon = await getPokemon(identifier)
+
+    this.pokemon = this.pokemon.fill(pokemon, start, end)
+  }
+
+  find(identifier: PokemonIdentifier): Pokemon | null | undefined {
+    return this.pokemon[this.indexOf(identifier)]
   }
 
   get(index: number): Pokemon | null | undefined {
@@ -112,7 +90,7 @@ class Team {
     return this.indexOf(identifier) !== -1
   }
 
-  indexOf(identifier: PokemonIdentifier) {
+  indexOf(identifier: PokemonIdentifier | null) {
     if (typeof identifier === 'string') {
       return this.pokemon.findIndex((pokemon) => pokemon?.name === identifier)
     } else if (typeof identifier === 'number') {
@@ -126,14 +104,59 @@ class Team {
     }
   }
 
+  isEmpty() {
+    return this.pokemon.every((pokemon) => pokemon === null)
+  }
+
   isFull() {
     return this.pokemon.indexOf(null) === -1
   }
 
-  async set(index: number, identifier: PokemonIdentifier) {
+  pop() {
+    const lastPokemonSlot = this.pokemon.findLastIndex(
+      (pokemon) => pokemon !== null
+    )
+    if (lastPokemonSlot === -1) {
+      throw new Error('Cannot pop from an empty team')
+    }
+
+    const removed = this.pokemon[lastPokemonSlot]
+    this.pokemon[lastPokemonSlot] = null
+    return removed
+  }
+
+  async push(identifier: PokemonIdentifier) {
+    const emptySlot = this.pokemon.indexOf(null)
+    if (emptySlot === -1) {
+      throw new Error('Cannot push to a full team')
+    }
+
     const pokemon = await getPokemon(identifier)
-    this.pokemon[index] = pokemon
+    this.pokemon[emptySlot] = pokemon
     return pokemon
+  }
+
+  async set(identifiers: PokemonIdentifier[]): Promise<void>
+  async set(index: number, identifier: PokemonIdentifier): Promise<void>
+  async set(
+    ...args: [PokemonIdentifier[]] | [number, PokemonIdentifier]
+  ): Promise<void> {
+    if (args.length === 1) {
+      const [identifiers] = args
+
+      this.pokemon = await Promise.all(
+        identifiers.map(async (identifier) => await getPokemon(identifier))
+      )
+    } else {
+      const [index, identifier] = args
+
+      if (index < 0 || index >= this.pokemon.length) {
+        throw new Error('Index out of bounds')
+      }
+
+      const pokemon = await getPokemon(identifier)
+      this.pokemon[index] = pokemon
+    }
   }
 
   toString() {

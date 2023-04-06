@@ -1,6 +1,16 @@
 import test from 'ava'
+
 import Team from '../src/index.js'
-import bulbasaur from './data/bulbasaur.json' assert { type: 'json' }
+
+import bulbasaur from './data/bulbasaur.js'
+
+test('defaults are set correctly', (t) => {
+  const team = new Team()
+
+  t.is(team.name, '')
+  t.deepEqual(team.pokemon, [null, null, null, null, null, null])
+  t.is(team.capacity, Team.DEFAULT_TEAM_SIZE)
+})
 
 test('name is set correctly', (t) => {
   const name = 'Team 10'
