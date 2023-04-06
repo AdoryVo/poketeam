@@ -4,7 +4,7 @@
       import Team from 'https://www.unpkg.com/poketeam'
 
       const team = new Team()
-      team.add('bulbasaur')
+      await team.push('bulbasaur')
 
       console.log(team.get(0).name) // => 'bulbasaur'
     </script>

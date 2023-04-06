@@ -1,7 +1,7 @@
 import { type Pokemon } from 'pokedex-promise-v2'
 
-import { basic, getPokemon } from './pokemon.js'
 import type { PokemonIdentifier, TeamOptions } from './types.js'
+import { basic, getPokemon } from './utils.js'
 
 class Team {
   static DEFAULT_TEAM_SIZE = 6

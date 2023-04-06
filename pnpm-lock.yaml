@@ -40,8 +40,8 @@ devDependencies:
     specifier: ^13.2.0
     version: 13.2.0
   poketeam:
-    specifier: 0.1.0-development
-    version: 0.1.0-development
+    specifier: 0.2.1-development
+    version: 0.2.1-development
   prettier:
     specifier: ^2.8.7
     version: 2.8.7
@@ -2541,8 +2541,8 @@ packages:
     transitivePeerDependencies:
       - debug
 
-  /poketeam@0.1.0-development:
-    resolution: {integrity: sha512-Xkg726ahdMt3oib1uwZazsk2OkI1/sEtAY+F8QQd1rtci8wONQIV006Kp5wT+upt5huVHenCxUwg04b/HKKwtw==}
+  /poketeam@0.2.1-development:
+    resolution: {integrity: sha512-daaoAu8vV5RfLXvp7FNnFqUW2CD0xeew6JswsKGUWgpWZ0B+c4e0PYqljyVZabsW0iefqFhJ58nxjZcR6SxpxA==}
     dependencies:
       lodash: 4.17.21
       pokedex-promise-v2: 4.1.0

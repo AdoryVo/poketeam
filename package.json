@@ -1,6 +1,6 @@
 {
   "name": "poketeam",
-  "version": "0.2.0-development",
+  "version": "0.2.1-development",
   "description": "Library for building Pokemon teams",
   "keywords": [
     "pokemon",
@@ -41,7 +41,7 @@
     "eslint-plugin-import": "^2.27.5",
     "husky": "^8.0.3",
     "lint-staged": "^13.2.0",
-    "poketeam": "0.1.0-development",
+    "poketeam": "0.2.1-development",
     "prettier": "^2.8.7",
     "ts-node": "^10.9.1",
     "tsup": "^6.7.0",

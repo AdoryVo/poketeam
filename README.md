@@ -20,19 +20,19 @@ Poketeam helps you with logic for building Pokémon teams in your projects & app
 
 ## Usage
 
-```js
-import Team from 'poketeam'
+```ts
+import Team, { basic, getPokemon } from 'poketeam'
 
 // Initialization
 const options = {
   name: 'Team Rocket', // Team name
   pokemon: [],         // Initial list of Pokemon
-  capacity: 3,         // Team capacity
+  capacity: 3          // Team capacity
 }
 const team = new Team(options)
 
 // Add a Pokemon to your team (async via PokeAPI)
-const bulbasaur = await team.push('bulbasaur')
+const bulbasaur: PokeAPI.Pokemon = await team.push('bulbasaur')
 
 // Set a new team
 await team.set(['bulbasaur', 'charmander', 'squirtle'])
@@ -43,12 +43,31 @@ team.get(0)
 // Get all Pokemon in your team
 team.getAll()
 
+// Find pokemon by name, id, or Pokemon
+team.find('bulbasaur')
+team.find(1)
+team.find(bulbasaur)
+
+// View and edit your team with methods
+team.has('bulbasaur')
+team.indexOf('bulbasaur')
+team.isFull()
+team.delete('bulbasaur')
+await team.fill('bulbasaur')
+team.clear()
+// And more!
+
+// Use utility functions for further logic
+const mudkip = await getPokemon('mudkip')
+console.log(basic(mudkip))
+
 // Display your team formatted as a string
 console.log(`${team}`)
 ```
 
 ## Coming Soon
 - API documentation & sufficient JSDoc 
+- Interactive examples
 - Learnset & moveset interactivity
 - Stats, levels, abilities, etc.
 - Data & image getters for easy frontend integration
